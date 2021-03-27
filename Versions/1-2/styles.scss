@@ -1,0 +1,90 @@
+﻿*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica;
+}
+
+/* MAIN MAP */
+#mapid { 
+    height: 800px;
+    width: 800px;
+    cursor: crosshair;
+
+}
+
+.leaflet-marker-icon{
+    border: 1px dashed red;
+}
+
+#popup-content{
+
+    .title{
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        text-align: left;
+    }
+
+    .input-title{
+        height: auto;
+        height: 36px;
+        width: 100%;
+
+        &::placeholder{
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+    }
+
+    .note{
+        font-size: 14px;
+        padding: 6px 0px 6px 0px;
+        margin-bottom: 6px;
+        text-align: left;
+    }
+
+    .reward{
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        text-align: left;
+    }
+
+    .controls{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 6px;
+
+        .button{
+            border: 1px solid black;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 6px;
+            height: 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            &:hover{
+                opacity: 0.7;
+                cursor: pointer;
+            }
+
+            .label{
+                display: block;
+            }
+        }
+
+        .button.a{
+            background-color: lightgreen;
+        }
+
+        .button.b{
+            background-color: pink;
+        }
+    }
+}

@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Helvetica;
+}
+
+/* MAIN MAP */
+#mapid {
+  height: 800px;
+  width: 800px;
+  cursor: crosshair;
+}
+
+.leaflet-marker-icon {
+  border: 1px dashed red;
+}
+
+#popup-content .title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-align: left;
+}
+#popup-content .input-title {
+  height: auto;
+  height: 36px;
+  width: 100%;
+}
+#popup-content .input-title::placeholder {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-align: left;
+}
+#popup-content .note {
+  font-size: 14px;
+  padding: 6px 0px 6px 0px;
+  margin-bottom: 6px;
+  text-align: left;
+}
+#popup-content .reward {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-align: left;
+}
+#popup-content .controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 6px;
+}
+#popup-content .controls .button {
+  border: 1px solid black;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 6px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#popup-content .controls .button:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+#popup-content .controls .button .label {
+  display: block;
+}
+#popup-content .controls .button.a {
+  background-color: lightgreen;
+}
+#popup-content .controls .button.b {
+  background-color: pink;
+}
+
+/*# sourceMappingURL=styles.css.map */

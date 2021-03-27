@@ -2,7 +2,7 @@
 
 var copenhagenLocation = [55.685, 12.57];
 var copenhagenLocation2 = [55.6854, 12.5702];
-var zoomLevel = 13; // higher number - sat closer to ground; default 13
+var zoomLevel = 16; // higher number - sat closer to ground; default 13
 
 var map = L.map('mapid').setView(copenhagenLocation, zoomLevel);
 // first value of SetView goes up/down - higher number moves the satellite north
@@ -31,57 +31,112 @@ var pinIcon = L.icon({
     shadowAnchor: [22, 94]
 });
 
-var oTestPin = {
-    "latlng": [55.685, 12.57],
+var oTestMarker = {
+    "id": 1,
+    "latlng": {"lat": 55.6852, "lng": 12.5703},
     "title": "dummy title",
     "note": "dummy note note note note note",
     "reward": 150
 }
 
-var pins = [];
+var oTestMarker2 = {
+    "id": 2,
+    "latlng": {"lat": 55.6851, "lng": 12.5701},
+    "title": "dummy title 2",
+    "note": "dummy note note note note note",
+    "reward": 200
+}
 
-pins.push(oTestPin);
+function markerClicked(marker){
+    console.log("Marker clicked:", marker.target);
+}
 
-
-var mapClickLocation;
-
-var popupContentBase = getPopupContentString();
-
-function createPin(latLong){
+function createPin(latLong){ // new empty pins
 
     var newPin = L.marker(latLong, {icon: pinIcon}).addTo(map);
+
+    newPin.addEventListener("click", markerClicked);
+        
+    newPin.id = 1;
     console.log("Creating new Pin:", newPin)
-    var newPopup = createNewPopup(latLong);
+    var newPopup = createPopup(latLong);
     newPin.bindPopup(newPopup);
 }
 
-function createNewPopup(latLong){
+function displayMarker(markerObject){ // existing pins, with content
 
-    var newPopup = L.popup({offset: [0,-30]})
-    .setLatLng(latLong)
-    .setContent(popupContentBase)
-    .openOn(map);
 
-    var noteInput = document.getElementById("note-input");
-    noteInput.addEventListener("keydown", function(event){
-        console.log(noteInput.value);
+}
+
+var markersArray = [];
+
+markersArray.push(oTestMarker);
+markersArray.push(oTestMarker2);
+
+function renderMarkers(markersArray){
+
+    markersArray.forEach((markerObject)=>{
+        console.log("Processing single pin:", markerObject);
+
+        var newMarker = L.marker(markerObject.latlng, {icon: pinIcon})
+
+        newMarker.id = markerObject.id;
+        newMarker.latlng = markerObject.latlng;
+        newMarker.title = markerObject.title;
+
+        newMarker.addEventListener("click", function(e){
+            console.log(newMarker);
+        });
+
+        var newPopup = L.popup({offset: [0,-30]})
+        .setLatLng(markerObject.latlng)
+        .setContent(createPopupContent(markerObject))
+        newPopup.addEventListener("click", function(newPopup){
+            console.log(newPopup)
+        })
+
+        newMarker.bindPopup(newPopup);
+        
+        newMarker.addTo(map);
     })
+}
 
-    return newPopup;
+renderMarkers(markersArray);
 
+var popupContentBase = getPopupContentString();
+function createPopupContent(pinObject){
+
+    var popupContentString = `
+    <div class="popup-content-filled" data-pin-id=${pinObject.id}>
+
+        <div class="title" type="text">${pinObject.title}</div>
+        <div class="note" type="text">${pinObject.note}</div>
+
+        <div class="reward controls">
+            <div class="reward">${pinObject.reward}</div>
+        </div>
+
+        <div class="popup controls">
+            <div class="btn btn-a"><div class="label">A</div></div>
+            <div class="btn btn-b"><div class="label">B</div></div>
+        </div>
+    
+    </div>
+    `
+    return popupContentString;
 }
 
 function getPopupContentString(){
     var popupContentBase = document.getElementById("popup-content");
     var popupContentBaseString = document.getElementById("popup-content").outerHTML;
     popupContentBase.parentNode.removeChild(popupContentBase);
-    console.log("Getting popupContentBase:", popupContentBase);
+    // console.log("Getting popupContentBase:", popupContentBase);
     return popupContentBaseString;
 }
 
 map.addEventListener("click", function(mapClick){
 
-        activePin = createPin([mapClick.latlng.lat, mapClick.latlng.lng]); // create a pin
+        // activePin = createPin([mapClick.latlng.lat, mapClick.latlng.lng]); // create a pin
 
 });
 

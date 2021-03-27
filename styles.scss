@@ -14,10 +14,9 @@
 
 $color-input-bg: #fafafa;
 $color-input-placeholder: black;
-
-.leaflet-marker-icon{
-    border: 1px dashed red;
-}
+$font-size-extra-large: 24px;
+$font-size-large: 18px;
+$font-size-small: 14px;
 
 .popup-image{
 
@@ -27,15 +26,13 @@ $color-input-placeholder: black;
     margin: auto;
     // z-index: -100;
 
+
     img{
         width: 100%;
         display:block;
         margin:auto;
+        border-radius: 12px 12px 0px 0px;
     }
-}
-
-.popup{ // the whole popup. wraps photo + content
-    // display: grid;
 }
 
 .popup-content{ // text content of the popup
@@ -45,12 +42,62 @@ $color-input-placeholder: black;
     background-color: white;
 
     .title{
-        font-size: 18px;
+        font-size: $font-size-extra-large;
         font-weight: 600;
-        margin-bottom: 6px;
+        margin-bottom: 12px;
         text-align: left;
         font-family: "Product Sans Bold";
     }
+
+    .note{
+        margin-bottom: 12px;
+        font-size: $font-size-small;
+    }
+
+    .reward{
+        font-size: $font-size-extra-large;
+        font-weight: 600;
+        text-align: left;
+        color: green;
+        font-family: "Product Sans Bold";
+    
+    }
+
+    .controls{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 6px;
+        margin-top: 18px;
+
+        .btn{
+            border: 1px solid black;
+            font-size: $font-size-extra-large;
+            text-align: center;
+            // margin-top: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            &:hover{
+                opacity: 0.7;
+                cursor: pointer;
+            }
+
+            .label{
+                display: block;
+            }
+        }
+
+        .button.a{
+            background-color: lightgreen;
+        }
+
+        .button.b{
+            background-color: pink;
+        }
+    }
+
+    // for empty popup
 
     input{
         border: none;
@@ -62,12 +109,7 @@ $color-input-placeholder: black;
         }
     }
 
-    .note{
-        margin-bottom: 6px;
-        font-size: 14px;
-    }
-
-    textarea{ // for empty only
+    textarea{
         border: 0;
         outline: 0;
         resize: none;
@@ -96,48 +138,6 @@ $color-input-placeholder: black;
         &::placeholder{
             color: black;
             opacity: 0.3;
-        }
-    }
-
-    .reward{
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 6px;
-        text-align: left;
-        color: green;
-    }
-
-    .controls{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 6px;
-
-        .btn{
-            border: 1px solid black;
-            font-size: 14px;
-            text-align: center;
-            margin-top: 6px;
-            height: 36px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            &:hover{
-                opacity: 0.7;
-                cursor: pointer;
-            }
-
-            .label{
-                display: block;
-            }
-        }
-
-        .button.a{
-            background-color: lightgreen;
-        }
-
-        .button.b{
-            background-color: pink;
         }
     }
 }

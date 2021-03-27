@@ -19,7 +19,6 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
 // note: buttons only exist in the DOM after their marker is clicked
 
-
 // define pin icon
 var pinIcon = L.icon({
     iconUrl: 'pin-2.svg',
@@ -58,7 +57,7 @@ function createPin(latLong){ // new empty pins
     var newPin = L.marker(latLong, {icon: pinIcon}).addTo(map);
 
     newPin.addEventListener("click", markerClicked);
-        
+
     newPin.id = 1;
     console.log("Creating new Pin:", newPin)
     var newPopup = createPopup(latLong);
@@ -118,14 +117,12 @@ function createPopupContent(pinObject){
             
             <div class="title" type="text">${pinObject.title}</div>
             <div class="note" type="text">${pinObject.note}</div>
-
-            <div class="reward controls">
-                <div class="reward">${pinObject.reward} kr</div>
-            </div>
-
+            <div class="reward">Bounty: ${pinObject.reward} kr</div>
             <div class="popup controls">
-                <div class="btn btn-a"><div class="label">Report as Done</div></div>
-                <div class="btn btn-b"><div class="label">Close</div></div>
+
+                <div class="btn"><div class="label">Bid</div></div>
+                <div class="btn"><div class="label">Attempt</div></div>
+
             </div>
         
         </div>

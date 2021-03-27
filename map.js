@@ -34,16 +34,18 @@ var pinIcon = L.icon({
 var oTestMarker = {
     "id": 1,
     "latlng": {"lat": 55.6852, "lng": 12.5703},
-    "title": "dummy title",
-    "note": "dummy note note note note note note note note note note note note note note note",
+    "imgUrl": "1.jpg",
+    "title": "Trash pickup around the lakes",
+    "note": "Ensure your system meets each of the following prerequisites. You only need to perform each prerequisite step once on your system.",
     "reward": 150
 }
 
 var oTestMarker2 = {
     "id": 2,
     "latlng": {"lat": 55.6851, "lng": 12.5701},
-    "title": "dummy title 2",
-    "note": "dummy note note note note note note note note note note note note note note note",
+    "imgUrl": "2.jpg",
+    "title": "Messy garbage bin in City Center",
+    "note": "Once you have installed the MongoDB Server in the steps above, the Database Tools are available directly from the command line in your macOS Terminal application.",
     "reward": 200
 }
 
@@ -96,7 +98,6 @@ function renderMarkers(markersArray){
         })
 
         newMarker.bindPopup(newPopup);
-        
         newMarker.addTo(map);
     })
 }
@@ -106,20 +107,29 @@ renderMarkers(markersArray);
 function createPopupContent(pinObject){
 
     var popupContentString = `
-    <div class="popup-content" data-pin-id=${pinObject.id}>
 
-        <div class="title" type="text">${pinObject.title}</div>
-        <div class="note" type="text">${pinObject.note}</div>
+    <div class="popup">
 
-        <div class="reward controls">
-            <div class="reward">${pinObject.reward}</div>
+        <div class="popup-image">
+            <img src="images/${pinObject.imgUrl}">
         </div>
 
-        <div class="popup controls">
-            <div class="btn btn-a"><div class="label">Accept</div></div>
-            <div class="btn btn-b"><div class="label">Close</div></div>
+        <div class="popup-content" data-pin-id=${pinObject.id}>
+            
+            <div class="title" type="text">${pinObject.title}</div>
+            <div class="note" type="text">${pinObject.note}</div>
+
+            <div class="reward controls">
+                <div class="reward">${pinObject.reward} kr</div>
+            </div>
+
+            <div class="popup controls">
+                <div class="btn btn-a"><div class="label">Report as Done</div></div>
+                <div class="btn btn-b"><div class="label">Close</div></div>
+            </div>
+        
         </div>
-    
+
     </div>
     `
     return popupContentString;

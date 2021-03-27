@@ -33,7 +33,14 @@
   color: black;
   opacity: 0.5;
 }
-#popup-content .input-title {
+#popup-content textarea {
+  border: 0;
+  outline: 0;
+  resize: none;
+  background-color: #fafafa;
+  height: 4em;
+}
+#popup-content input.title {
   height: auto;
   height: 36px;
   width: 100%;
@@ -42,11 +49,16 @@
   margin-bottom: 6px;
   text-align: left;
 }
-#popup-content .note {
+#popup-content textarea.note {
   font-size: 14px;
   padding: 6px 0px 6px 0px;
   margin-bottom: 6px;
   text-align: left;
+  width: 100%;
+}
+#popup-content textarea.note::placeholder {
+  color: black;
+  opacity: 0.3;
 }
 #popup-content .reward {
   font-size: 24px;

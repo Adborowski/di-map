@@ -8,7 +8,6 @@ var map = L.map('mapid').setView(copenhagenLocation, zoomLevel);
 // first value of SetView goes up/down - higher number moves the satellite north
 // second value goes left/right - higher number moves the satellite east
 
-
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
@@ -18,37 +17,10 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     accessToken: 'pk.eyJ1IjoiYWRib3Jvd3NraSIsImEiOiJja21vcjJmYWgyN2RuMnBrNXdwaGQ5YXVyIn0.stnVilPeFh4jamL573O1Lw'
 }).addTo(map);
 
-var circle = L.circle(copenhagenLocation, {
-    color: 'red',
-    fillColor: '#f03',
-    fillOpacity: 0.5,
-    radius: 100
-});
+// note: buttons only exist in the DOM after their marker is clicked
 
 
-// circle.addTo(map);
-// circle.bindPopup();
-
-
-// buttons only exist in the DOM after their marker is clicked
-
-circle.addEventListener("click", ()=>{
-
-    var buttonA = document.getElementById("buttonA");
-    buttonA.addEventListener("click", ()=>{alert("You have clicked button A")});
-
-})
-
-// var polygon = L.polygon([
-//     copenhagenLocation,
-//     [copenhagenLocation[0]+0.005, copenhagenLocation[1]+0.005],
-//     [copenhagenLocation[0]+0.008, copenhagenLocation[1]-0.008]
-// ]).addTo(map);
-
-// var myIcon = L.divIcon({className: 'my-div-icon'});
-// // you can set .my-div-icon styles in CSS
-// L.marker(copenhagenLocation2, {icon: myIcon}).addTo(map);
-
+// define pin icon
 var pinIcon = L.icon({
     iconUrl: 'pin-2.svg',
     iconSize: [30, 30],
@@ -59,15 +31,26 @@ var pinIcon = L.icon({
     shadowAnchor: [22, 94]
 });
 
+var oTestPin = {
+    "latlng": [55.685, 12.57],
+    "title": "dummy title",
+    "note": "dummy note note note note note",
+    "reward": 150
+}
+
 var pins = [];
+
+pins.push(oTestPin);
+
+
 var mapClickLocation;
+
+var popupContentBase = getPopupContentString();
 
 function createPin(latLong){
 
     var newPin = L.marker(latLong, {icon: pinIcon}).addTo(map);
-    console.log("newPin:", newPin)
-    console.log(newPin);
-    pins.push(newPin);
+    console.log("Creating new Pin:", newPin)
     var newPopup = createNewPopup(latLong);
     newPin.bindPopup(newPopup);
 }
@@ -76,29 +59,25 @@ function createNewPopup(latLong){
 
     var newPopup = L.popup({offset: [0,-30]})
     .setLatLng(latLong)
-    .setContent(getPopupContentString())
+    .setContent(popupContentBase)
     .openOn(map);
+
+    var noteInput = document.getElementById("note-input");
+    noteInput.addEventListener("keydown", function(event){
+        console.log(noteInput.value);
+    })
 
     return newPopup;
 
 }
 
-
 function getPopupContentString(){
     var popupContentBase = document.getElementById("popup-content");
     var popupContentBaseString = document.getElementById("popup-content").outerHTML;
     popupContentBase.parentNode.removeChild(popupContentBase);
-    // console.log(popupContentBase);
+    console.log("Getting popupContentBase:", popupContentBase);
     return popupContentBaseString;
 }
-
-// createPin(copenhagenLocation);
-// createPin(copenhagenLocation2);
-
-var canUserCreatePins = true;
-var isPinOpen = false;
-var activePin;
-var mode = "create";
 
 map.addEventListener("click", function(mapClick){
 

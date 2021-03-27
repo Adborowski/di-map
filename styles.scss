@@ -13,6 +13,9 @@
 
 }
 
+$color-input-bg: #fafafa;
+$color-input-placeholder: black;
+
 .leaflet-marker-icon{
     border: 1px dashed red;
 }
@@ -38,7 +41,15 @@
         }
     }
 
-    .input-title{
+    textarea{
+        border: 0;
+        outline: 0;
+        resize: none;
+        background-color: $color-input-bg;
+        height: 4em;
+    }
+
+    input.title{
         height: auto;
         height: 36px;
         width: 100%;
@@ -47,15 +58,19 @@
         margin-bottom: 6px;
         text-align: left;
 
-
-
     }
 
-    .note{
+    textarea.note{
         font-size: 14px;
         padding: 6px 0px 6px 0px;
         margin-bottom: 6px;
         text-align: left;
+        width: 100%;
+
+        &::placeholder{
+            color: black;
+            opacity: 0.3;
+        }
     }
 
     .reward{

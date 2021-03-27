@@ -25,7 +25,7 @@ var pinIcon = L.icon({
     iconUrl: 'pin-2.svg',
     iconSize: [30, 30],
     iconAnchor: [15, 30],
-    popupAnchor: [-3, -76],
+    popupAnchor: [0, -10],
     shadowUrl: '',
     shadowSize: [68, 95],
     shadowAnchor: [22, 94]
@@ -35,7 +35,7 @@ var oTestMarker = {
     "id": 1,
     "latlng": {"lat": 55.6852, "lng": 12.5703},
     "title": "dummy title",
-    "note": "dummy note note note note note",
+    "note": "dummy note note note note note note note note note note note note note note note",
     "reward": 150
 }
 
@@ -43,7 +43,7 @@ var oTestMarker2 = {
     "id": 2,
     "latlng": {"lat": 55.6851, "lng": 12.5701},
     "title": "dummy title 2",
-    "note": "dummy note note note note note",
+    "note": "dummy note note note note note note note note note note note note note note note",
     "reward": 200
 }
 
@@ -103,11 +103,10 @@ function renderMarkers(markersArray){
 
 renderMarkers(markersArray);
 
-var popupContentBase = getPopupContentString();
 function createPopupContent(pinObject){
 
     var popupContentString = `
-    <div class="popup-content-filled" data-pin-id=${pinObject.id}>
+    <div class="popup-content" data-pin-id=${pinObject.id}>
 
         <div class="title" type="text">${pinObject.title}</div>
         <div class="note" type="text">${pinObject.note}</div>
@@ -117,21 +116,13 @@ function createPopupContent(pinObject){
         </div>
 
         <div class="popup controls">
-            <div class="btn btn-a"><div class="label">A</div></div>
-            <div class="btn btn-b"><div class="label">B</div></div>
+            <div class="btn btn-a"><div class="label">Accept</div></div>
+            <div class="btn btn-b"><div class="label">Close</div></div>
         </div>
     
     </div>
     `
     return popupContentString;
-}
-
-function getPopupContentString(){
-    var popupContentBase = document.getElementById("popup-content");
-    var popupContentBaseString = document.getElementById("popup-content").outerHTML;
-    popupContentBase.parentNode.removeChild(popupContentBase);
-    // console.log("Getting popupContentBase:", popupContentBase);
-    return popupContentBaseString;
 }
 
 map.addEventListener("click", function(mapClick){

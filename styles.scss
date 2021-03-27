@@ -20,7 +20,7 @@ $color-input-placeholder: black;
     border: 1px dashed red;
 }
 
-#popup-content{
+.popup-content{
 
     padding: 12px;
 
@@ -41,7 +41,12 @@ $color-input-placeholder: black;
         }
     }
 
-    textarea{
+    .note{
+        margin-bottom: 6px;
+        font-size: 14px;
+    }
+
+    textarea{ // for empty only
         border: 0;
         outline: 0;
         resize: none;
@@ -78,6 +83,7 @@ $color-input-placeholder: black;
         font-weight: 600;
         margin-bottom: 6px;
         text-align: left;
+        color: green;
     }
 
     .controls{
@@ -87,7 +93,7 @@ $color-input-placeholder: black;
 
         .btn{
             border: 1px solid black;
-            font-size: 18px;
+            font-size: 14px;
             text-align: center;
             margin-top: 6px;
             height: 36px;

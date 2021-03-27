@@ -16,31 +16,35 @@
   border: 1px dashed red;
 }
 
-#popup-content {
+.popup-content {
   padding: 12px;
 }
-#popup-content .title {
+.popup-content .title {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 6px;
   text-align: left;
 }
-#popup-content input {
+.popup-content input {
   border: none;
   outline: none;
 }
-#popup-content input::placeholder {
+.popup-content input::placeholder {
   color: black;
   opacity: 0.5;
 }
-#popup-content textarea {
+.popup-content .note {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+.popup-content textarea {
   border: 0;
   outline: 0;
   resize: none;
   background-color: #fafafa;
   height: 4em;
 }
-#popup-content input.title {
+.popup-content input.title {
   height: auto;
   height: 36px;
   width: 100%;
@@ -49,31 +53,32 @@
   margin-bottom: 6px;
   text-align: left;
 }
-#popup-content textarea.note {
+.popup-content textarea.note {
   font-size: 14px;
   padding: 6px 0px 6px 0px;
   margin-bottom: 6px;
   text-align: left;
   width: 100%;
 }
-#popup-content textarea.note::placeholder {
+.popup-content textarea.note::placeholder {
   color: black;
   opacity: 0.3;
 }
-#popup-content .reward {
+.popup-content .reward {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 6px;
   text-align: left;
+  color: green;
 }
-#popup-content .controls {
+.popup-content .controls {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 6px;
 }
-#popup-content .controls .btn {
+.popup-content .controls .btn {
   border: 1px solid black;
-  font-size: 18px;
+  font-size: 14px;
   text-align: center;
   margin-top: 6px;
   height: 36px;
@@ -81,17 +86,17 @@
   flex-direction: column;
   justify-content: center;
 }
-#popup-content .controls .btn:hover {
+.popup-content .controls .btn:hover {
   opacity: 0.7;
   cursor: pointer;
 }
-#popup-content .controls .btn .label {
+.popup-content .controls .btn .label {
   display: block;
 }
-#popup-content .controls .button.a {
+.popup-content .controls .button.a {
   background-color: lightgreen;
 }
-#popup-content .controls .button.b {
+.popup-content .controls .button.b {
   background-color: pink;
 }
 

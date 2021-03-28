@@ -41,11 +41,29 @@ var oTestMarker = {
 
 var oTestMarker2 = {
     "id": 2,
-    "latlng": {"lat": 55.6851, "lng": 12.5701},
+    "latlng": {"lat": 55.68342592492469, "lng": 12.5701},
     "imgUrl": "2.jpg",
     "title": "Messy garbage bin in City Center",
     "note": "Once you have installed the MongoDB Server in the steps above, the Database Tools are available directly from the command line in your macOS Terminal application.",
     "reward": 200
+}
+
+var oTestMarker3 = {
+    "id": 3,
+    "latlng": {"lat": 55.68110881940737, "lng": 12.566422087656976},
+    "imgUrl": "3.jpg",
+    "title": "Get my frisbee out of the tree",
+    "note": "My beloved frisbee is stuck in the tree. Get it out and put it on the ground. I'll pick it up.",
+    "reward": 80
+}
+
+var oTestMarker4 = {
+    "id": 4,
+    "latlng": {"lat": 55.68455848771191, "lng": 12.565476879753989},
+    "imgUrl": "4.jpg",
+    "title": "Clean the stairs",
+    "note": "These stairs need to be refreshed after winter.",
+    "reward": 130
 }
 
 function markerClicked(marker){
@@ -73,6 +91,8 @@ var markersArray = [];
 
 markersArray.push(oTestMarker);
 markersArray.push(oTestMarker2);
+markersArray.push(oTestMarker3);
+markersArray.push(oTestMarker4);
 
 function renderMarkers(markersArray){
 
@@ -120,8 +140,8 @@ function createPopupContent(pinObject){
             <div class="reward">Bounty: ${pinObject.reward} kr</div>
             <div class="popup controls">
 
-                <div class="btn"><div class="label">Bid</div></div>
-                <div class="btn"><div class="label">Attempt</div></div>
+                <div class="btn"><div class="label">Add Bounty</div></div>
+                <div class="btn"><div class="label">Fix</div></div>
 
             </div>
         
@@ -133,11 +153,27 @@ function createPopupContent(pinObject){
 }
 
 map.addEventListener("click", function(mapClick){
-
+    console.log(mapClick.latlng);
         // activePin = createPin([mapClick.latlng.lat, mapClick.latlng.lng]); // create a pin
 
 });
 
+function getMarkerObjectsFromBackend(){
 
+    $.ajax({
+      url: "apis/api-get-markers.php",
+      method: "post",
+      data: "",
+      dataType: "json"
+    }).always(function(jData){
+      console.log("Data Retrieved:", jData); 
+    //   console.log(JSON.parse(jData.responseText)); 
+    });
+
+}
+
+getMarkerObjectsFromBackend();
+
+    
 
 

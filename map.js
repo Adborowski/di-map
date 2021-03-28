@@ -52,12 +52,9 @@ function createPin(latLong){ // new empty pins
     newPin.bindPopup(newPopup);
 }
 
-var markersArray = [];
+function renderMarker(markerObject){
 
-function renderMarkers(markersArray){
-
-    markersArray.forEach((markerObject)=>{
-        console.log("Processing single pin:", markerObject);
+    console.log("Rendering marker: ", markerObject);
 
         var newMarker = L.marker(markerObject.latlng, {icon: pinIcon})
 
@@ -78,26 +75,64 @@ function renderMarkers(markersArray){
 
         newMarker.bindPopup(newPopup);
         newMarker.addTo(map);
+
+};
+
+var openEditorMarker = false;
+
+function renderMarkerEditor(latlng){
+
+    console.log("Rendering marker editor.");
+
+        if (openEditorMarker != false){ 
+            openEditorMarker.remove(); // remove abandoned editor pins
+        }
+        var newMarker = L.marker(latlng, {icon: pinIcon});
+    
+        var newPopup = L.popup({offset: [0,-30]})
+        .setLatLng(latlng)
+        .setContent(createPopupEditorContent());
+
+        newPopup.addEventListener("click", function(newPopup){
+            console.log(newPopup)
+        })
+
+        newMarker.bindPopup(newPopup);
+        newMarker.addTo(map);
+        newMarker.openPopup();
+
+        // map.flyTo(newMarker._latlng);
+        // map.panBy(500);
+
+        openEditorMarker = newMarker;
+
+        $(".btn-cancel-marker").on("click", ()=>{
+            newMarker.closePopup();
+            newMarker.remove();
+        })
+}
+
+function renderMarkers(markersArray){
+    markersArray.forEach((markerObject)=>{
+        renderMarker(markerObject);
     })
 }
 
-renderMarkers(markersArray);
-
-function createPopupContent(pinObject){
-
+function createPopupContent(markerObject){
+    // common popup with marker data from db
     var popupContentString = `
 
     <div class="popup">
 
         <div class="popup-image">
-            <img src="images/${pinObject.imgUrl}">
+            <img src="images/${markerObject.imgurl}">
         </div>
 
-        <div class="popup-content" data-pin-id=${pinObject.id}>
+        <div class="popup-content" data-pin-id=${markerObject.id}>
             
-            <div class="title" type="text">${pinObject.title}</div>
-            <div class="note" type="text">${pinObject.note}</div>
-            <div class="reward">Bounty: ${pinObject.reward} kr</div>
+            <div class="title" type="text">${markerObject.title}</div>
+            <div class="note" type="text">${markerObject.note}</div>
+            <div class="reward">Bounty: ${markerObject.reward} kr</div>
             <div class="popup controls">
 
                 <div class="btn"><div class="label">Add Bounty</div></div>
@@ -112,12 +147,41 @@ function createPopupContent(pinObject){
     return popupContentString;
 }
 
-map.addEventListener("click", function(mapClick){
-    // console.log(mapClick.latlng);
-    // activePin = createPin([mapClick.latlng.lat, mapClick.latlng.lng]); // create a pin
+function createPopupEditorContent(){
 
+    var popupEditorContentString = `
+
+    <div class="popup">
+
+        <div class="popup-image">
+            <img src="images/editor-d.jpg">
+        </div>
+
+        <div class="popup-content">
+            
+            <textarea class="title" type="text" placeholder="Click to add title"></textarea>
+            <textarea class="note" type="text" placeholder="Click to add note"></textarea>
+            <input type="number" class="reward" placeholder="Set bounty (kr)"></input>
+            <div class="popup controls">
+
+                <div class="btn"><div class="label">Post</div></div>
+                <div class="btn btn-cancel-marker"><div class="label">Cancel</div></div>
+
+            </div>
+        
+        </div>
+
+    </div>
+    `
+    return popupEditorContentString;
+}
+
+map.addEventListener("click", function(mapClick){
+    console.log("Map clicked at latlng", mapClick.latlng);
+    renderMarkerEditor(mapClick.latlng);
 });
 
+// rendering function is called inside this
 function getMarkerObjectsFromBackend(){
 
     $.ajax({
@@ -139,6 +203,7 @@ function getMarkerObjectsFromBackend(){
     
     }).fail(function(){
         console.log("Failed to get markers from backend.")
+        
     });
 }
 

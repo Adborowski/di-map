@@ -13,7 +13,7 @@
 }
 
 $color-input-bg: #fafafa;
-$color-input-placeholder: black;
+$color-input-placeholder: #d0d0d0;
 $font-size-extra-large: 24px;
 $font-size-large: 18px;
 $font-size-small: 14px;
@@ -25,6 +25,17 @@ $font-size-small: 14px;
     left: 0;
     margin: auto;
     // z-index: -100;
+
+    .overlay{
+        position:absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: red;
+        border-radius: 12px 12px 0px 0px;
+        opacity: 0.5;
+    }
 
 
     img{
@@ -104,27 +115,32 @@ $font-size-small: 14px;
         outline: none;
 
         &::placeholder{
-            color: black;
-            opacity: 0.5;
+            color: $color-input-placeholder;
         }
+    }
+
+    input.reward{
+        margin-bottom: 12px;
     }
 
     textarea{
         border: 0;
         outline: 0;
         resize: none;
-        background-color: $color-input-bg;
-        height: 4em;
+        // background-color: $color-input-bg;
     }
 
-    input.title{
-        height: auto;
-        height: 36px;
+    textarea.title{
+        height: 2.5em;
         width: 100%;
         font-size: 24px;
         font-weight: 600;
         margin-bottom: 6px;
         text-align: left;
+
+        &::placeholder{
+            color: $color-input-placeholder;
+        }
 
     }
 
@@ -136,8 +152,14 @@ $font-size-small: 14px;
         width: 100%;
 
         &::placeholder{
-            color: black;
-            opacity: 0.3;
+            color: $color-input-placeholder;
+        }
+    }
+
+    textarea.reward{
+        
+        &::placeholder{
+            color:$color-input-placeholder;
         }
     }
 }

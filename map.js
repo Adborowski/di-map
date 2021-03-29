@@ -133,6 +133,7 @@ function renderMarkerEditor(latlng){
         $(".btn-cancel-marker").on("click", ()=>{
             newMarker.closePopup();
             newMarker.remove();
+            openMarker = false;
         })
 
         $(".btn-add-image").on("click", ()=>{
@@ -257,7 +258,12 @@ map.addEventListener("popupopen", (popupEvent)=>{ // power the Cancel button on 
     var markerId = popupEvent.popup.popupId;
 
     $(".btn-delete-marker").on("click", ()=>{
+        console.log(popupEvent.popup._source);
+        popupEvent.popup._source.closePopup().remove();
+        openMarker = false;
         deleteMarker(markerId);
+        // popupEvent.popup.closePopup();
+        // popupEvent.popup._source.remove();
     })
 
 })
@@ -269,6 +275,15 @@ map.addEventListener("popupclose", (popup)=>{
 
 function deleteMarker(markerId){
     console.log("Deleting marker with id", markerId);
+
+    $.ajax({
+        url: "apis/api-delete-marker.php",
+        type: "post",
+        data: {markerId: markerId},
+    }).done(function(sData){
+        var jData = JSON.parse(sData.substring(1));
+        console.log(jData);
+    })
 }
 
 // rendering function is called inside this

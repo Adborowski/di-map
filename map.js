@@ -78,6 +78,8 @@ function renderMarker(markerObject){
         newPopup.addEventListener("click", function(newPopup){
             console.log(newPopup)
         })
+        newPopup.type = "marker";
+        
 
         newMarker.bindPopup(newPopup);
         markersLayerGroup.addLayer(newMarker);
@@ -100,19 +102,23 @@ function renderMarkerEditor(latlng){
             openEditorMarker.remove(); // remove abandoned editor pins
         }
 
-        var newMarker = L.marker(latlng, {draggable: false, icon: pinIconEditMode});
+        var newMarker = L.marker(latlng, {draggable: false, icon: pinIconEditMode})
+                         .on('click', ()=>{openMarker = false}); // hotfix - the openMarker flag system needs a rework
         newMarker.type = "markerEditor";
+
         var newPopup = L.popup({offset: [0,-30]})
         .setLatLng(latlng)
         .setContent(createPopupEditorContent());
 
-        newPopup.addEventListener("click", function(newPopup){
-            console.log(newPopup);
-        })
-
+        newPopup.type = "markerEditor";
+        
         newMarker.bindPopup(newPopup);
         newMarker.addTo(map);
         newMarker.openPopup();
+
+        newPopup.addEventListener("click", function(newPopup){
+            console.log(newPopup);
+        })
 
         // newMarker.on('dragend', function(e) { // this is cool ux but dragging is disabled for now
         //     newMarker.openPopup();
@@ -236,7 +242,6 @@ map.addEventListener("click", function(mapClick){
 
     if (openMarker != false){ // control what happens when you click away while there is an open popup on the map
         openMarker.closePopup();
-        openEditorMarker !== false ? openEditorMarker.remove() : console.log();
         openMarker = false;
     } else {
         renderMarkerEditor(mapClick.latlng);
@@ -255,8 +260,8 @@ map.addEventListener("popupopen", ()=>{ // power the Cancel button on every open
 })
 
 map.addEventListener("popupclose", (popup)=>{
-        console.log(popup);
-        openEditorMarker.remove();
+    openEditorMarker ? openEditorMarker.remove() : console.log();
+    openEditorMarker = false;
 });
 
 // rendering function is called inside this

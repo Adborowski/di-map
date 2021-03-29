@@ -103,7 +103,7 @@ $font-size-extra-large: 24px;
         }
 
         .btn-delete-marker{
-            grid-column: span 2
+            grid-column: span 2/auto;
         }
 
     } // end of .controls

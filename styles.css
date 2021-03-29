@@ -81,7 +81,7 @@
   display: block;
 }
 .popup-content .controls .btn-delete-marker {
-  grid-column: span 2;
+  grid-column: span 2/auto;
 }
 .popup-content .editable {
   border: 1px solid transparent;

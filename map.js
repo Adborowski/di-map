@@ -81,14 +81,14 @@ function renderMarker(markerObject){
 
 };
 
-var openEditorMarker = false; // a bool, which sometimes turns into an {object}
+var openEditorMarker = false; // a bool, which later turns into a marker object
+
 function renderMarkerEditor(latlng){
 
     console.log("Rendering marker editor.");
 
         if (openEditorMarker != false){ 
             openEditorMarker.remove(); // remove abandoned editor pins
-            // why does this work?
         }
 
         var newMarker = L.marker(latlng, {icon: pinIcon});
@@ -149,10 +149,10 @@ function createPopupContent(markerObject){
             <div class="note" type="text">${markerObject.note}</div>
             <div class="reward">Bounty: ${markerObject.reward} kr</div>
             <div class="popup controls">
-
                 <div class="btn"><div class="label">Add Bounty</div></div>
                 <div class="btn"><div class="label">Fix</div></div>
-                <div class="btn btn-delete-marker"><div class="label">Delete Marker</div></div>
+                <div class="btn btn-delete-marker"><div class="label">Delete Marker</div>
+            </div>
 
         </div>
 
@@ -215,16 +215,33 @@ function createPopupEditorContent(){
     return popupEditorContentString;
 }
 
+// map clicks
 map.addEventListener("click", function(mapClick){
     console.log("Map clicked at latlng", mapClick.latlng);
 
-    if (markersLayerGroup.isPopupOpen){
-        console.log("popup is open");
+    if (openEditorMarker != false){
+        map.closePopup();
+        openEditorMarker.remove();
+        openEditorMarker = false;
+    } else {
+        renderMarkerEditor(mapClick.latlng);
     }
+    // map.closePopup();
 
-    renderMarkerEditor(mapClick.latlng);
-    
+    // console.log("open editor marker?", openEditorMarker);
+
 });
+
+map.addEventListener("popupopen", ()=>{ // power the Cancel button on every opening of a popup - also when created, closed, then reopened
+
+    // this really only applies to the marker editor for now
+    $(".btn-cancel-marker").on("click", ()=>{
+        map.closePopup();
+        openEditorMarker = false;
+        console.log("open editor marker?", openEditorMarker);
+    })
+
+})
 
 // rendering function is called inside this
 function getMarkerObjectsFromBackend(){

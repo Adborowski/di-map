@@ -1,4 +1,9 @@
-﻿console.log("[MAP.JS]");
+﻿// TODO
+// - Save content of unfinished markers and paste it in when reopened
+// - Not Empty validation on marker editor
+// - Marker Editor or Editor Marker?
+
+console.log("[MAP.JS]");
 
 var copenhagenLocation = [55.685, 12.57];
 var copenhagenLocation2 = [55.6854, 12.5702];
@@ -30,6 +35,16 @@ var pinIcon = L.icon({
     shadowAnchor: [22, 94]
 });
 
+var pinIconEditMode = L.icon({
+    iconUrl: 'pin-4.svg',
+    iconSize: [30, 30],
+    iconAnchor: [15, 30],
+    popupAnchor: [0, -10],
+    shadowUrl: '',
+    shadowSize: [68, 95],
+    shadowAnchor: [22, 94]
+});
+
 var oTestMarker = {
     "id": 1,
     "latlng": {"lat": 55.6852, "lng": 12.5703},
@@ -39,20 +54,8 @@ var oTestMarker = {
     "reward": 150
 }
 
-function markerClicked(marker){
-    console.log("Marker clicked:", marker.target);
-}
-
-function createPin(latLong){ // new empty pins
-    var newPin = L.marker(latLong, {icon: pinIcon}).addTo(map);
-    newPin.addEventListener("click", markerClicked);
-    newPin.id = 1;
-    console.log("Creating new Pin:", newPin)
-    var newPopup = createPopup(latLong);
-    newPin.bindPopup(newPopup);
-}
-
 var markersLayerGroup = L.layerGroup();
+var openMarker = false;
 
 function renderMarker(markerObject){
 
@@ -63,9 +66,10 @@ function renderMarker(markerObject){
         newMarker.id = markerObject.id;
         newMarker.latlng = markerObject.latlng;
         newMarker.title = markerObject.title;
+        newMarker.type = "marker";
 
         newMarker.addEventListener("click", function(e){
-            console.log(newMarker);
+            openMarker = newMarker;
         });
 
         var newPopup = L.popup({offset: [0,-30]})
@@ -81,8 +85,13 @@ function renderMarker(markerObject){
 
 };
 
-var openEditorMarker = false; // a bool, which later turns into a marker object
+function renderMarkers(markersArray){
+    markersArray.forEach((markerObject)=>{
+        renderMarker(markerObject);
+    })
+}
 
+var openEditorMarker = false; // a bool, which later turns into a marker object
 function renderMarkerEditor(latlng){
 
     console.log("Rendering marker editor.");
@@ -91,20 +100,26 @@ function renderMarkerEditor(latlng){
             openEditorMarker.remove(); // remove abandoned editor pins
         }
 
-        var newMarker = L.marker(latlng, {icon: pinIcon});
+        var newMarker = L.marker(latlng, {draggable: false, icon: pinIconEditMode});
+        newMarker.type = "markerEditor";
         var newPopup = L.popup({offset: [0,-30]})
         .setLatLng(latlng)
         .setContent(createPopupEditorContent());
 
         newPopup.addEventListener("click", function(newPopup){
-            console.log(newPopup)
+            console.log(newPopup);
         })
 
         newMarker.bindPopup(newPopup);
         newMarker.addTo(map);
         newMarker.openPopup();
 
+        // newMarker.on('dragend', function(e) { // this is cool ux but dragging is disabled for now
+        //     newMarker.openPopup();
+        //     });
+
         openEditorMarker = newMarker;
+        openMarker = newMarker;
 
         $(".btn-cancel-marker").on("click", ()=>{
             newMarker.closePopup();
@@ -120,17 +135,15 @@ function renderMarkerEditor(latlng){
             var newMarkerObject = {};
             newMarkerObject.latlng = latlng;
             newMarkerObject.imgurl = "1.jpg"; // dummy for now, will get back to img upload
-            newMarkerObject.title = document.querySelector("textarea.title").value;
-            newMarkerObject.note = document.querySelector("textarea.note").value;
+            newMarkerObject.title = document.querySelector("div.title").innerHTML;
+            newMarkerObject.note = document.querySelector("div.note").innerHTML;
             newMarkerObject.reward = document.querySelector("input.reward").value;
-            postMarker(newMarkerObject);
-        })
-}
 
-function renderMarkers(markersArray){
-    markersArray.forEach((markerObject)=>{
-        renderMarker(markerObject);
-    })
+            postMarker(newMarkerObject);
+
+        });
+
+
 }
 
 function createPopupContent(markerObject){
@@ -163,7 +176,7 @@ function createPopupContent(markerObject){
 
 function postMarker(newMarkerObject){
 
-    $.ajax({
+    $.ajax({ // marker gets saved in the backend first
 
         url: "apis/api-post-new-marker.php",
         data: {
@@ -179,8 +192,9 @@ function postMarker(newMarkerObject){
 
         // substring(1) is once again a hack - for some reason the json-string gets prepended with a space in the API. Will cause problems later.
         console.log("Posting marker...", JSON.parse(sData.substring(1)));
-        getMarkerObjectsFromBackend();
-        map.closePopup();
+        getMarkerObjectsFromBackend(); // the map gets updated
+        map.closePopup(); // close after posting
+        openMarker = false; // marker is closed now
 
     });
 
@@ -215,20 +229,18 @@ function createPopupEditorContent(){
     return popupEditorContentString;
 }
 
-// map clicks
+// map click handling
 map.addEventListener("click", function(mapClick){
+
     console.log("Map clicked at latlng", mapClick.latlng);
 
-    if (openEditorMarker != false){
-        map.closePopup();
-        openEditorMarker.remove();
-        openEditorMarker = false;
+    if (openMarker != false){ // control what happens when you click away while there is an open popup on the map
+        openMarker.closePopup();
+        openEditorMarker !== false ? openEditorMarker.remove() : console.log();
+        openMarker = false;
     } else {
         renderMarkerEditor(mapClick.latlng);
     }
-    // map.closePopup();
-
-    // console.log("open editor marker?", openEditorMarker);
 
 });
 
@@ -237,11 +249,15 @@ map.addEventListener("popupopen", ()=>{ // power the Cancel button on every open
     // this really only applies to the marker editor for now
     $(".btn-cancel-marker").on("click", ()=>{
         map.closePopup();
-        openEditorMarker = false;
-        console.log("open editor marker?", openEditorMarker);
+        openMarker = false;
     })
 
 })
+
+map.addEventListener("popupclose", (popup)=>{
+        console.log(popup);
+        openEditorMarker.remove();
+});
 
 // rendering function is called inside this
 function getMarkerObjectsFromBackend(){

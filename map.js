@@ -152,9 +152,8 @@ function createPopupContent(markerObject){
 
                 <div class="btn"><div class="label">Add Bounty</div></div>
                 <div class="btn"><div class="label">Fix</div></div>
+                <div class="btn btn-delete-marker"><div class="label">Delete Marker</div></div>
 
-            </div>
-        
         </div>
 
     </div>
@@ -199,9 +198,9 @@ function createPopupEditorContent(){
 
         <div class="popup-content editor">
             
-            <textarea class="title" type="text" placeholder="Add title">Some dummy title</textarea>
-            <textarea class="note" type="text" placeholder="Add note">Some dummy note</textarea>
-            <input type="number" class="reward" placeholder="Add bounty (kr)" value="102"></input>
+            <div contenteditable="true" class="editable title" type="text" data-placeholder="Add a title"></div>
+            <div contenteditable="true" class="editable note" type="text" data-placeholder="Add a note"></div>
+            <input type="number" class="editable reward" placeholder="Set a reward"></input>
             <div class="popup controls">
 
                 <div class="btn btn-post-marker"><div class="label">Post</div></div>
@@ -218,7 +217,7 @@ function createPopupEditorContent(){
 
 map.addEventListener("click", function(mapClick){
     console.log("Map clicked at latlng", mapClick.latlng);
-    
+
     if (markersLayerGroup.isPopupOpen){
         console.log("popup is open");
     }

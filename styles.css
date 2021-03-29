@@ -80,11 +80,15 @@
 .popup-content .controls .btn .label {
   display: block;
 }
-.popup-content .controls .button.a {
-  background-color: lightgreen;
+.popup-content .controls .btn-delete-marker {
+  grid-column: span 2;
 }
-.popup-content .controls .button.b {
-  background-color: pink;
+.popup-content .editable {
+  border: 1px solid transparent;
+}
+.popup-content .editable:empty:before {
+  content: attr(data-placeholder);
+  color: #d0d0d0;
 }
 .popup-content input {
   border: none;
@@ -95,7 +99,6 @@
 }
 .popup-content input.reward {
   margin-bottom: 12px;
-  background-color: #fafafa;
   width: 100%;
   min-width: 250px;
 }
@@ -125,9 +128,6 @@
   height: 6em;
 }
 .popup-content textarea.note::placeholder {
-  color: #d0d0d0;
-}
-.popup-content textarea.reward::placeholder {
   color: #d0d0d0;
 }
 

@@ -87,8 +87,8 @@ function renderMarkerEditor(latlng){
         if (openEditorMarker != false){ 
             openEditorMarker.remove(); // remove abandoned editor pins
         }
+
         var newMarker = L.marker(latlng, {icon: pinIcon});
-    
         var newPopup = L.popup({offset: [0,-30]})
         .setLatLng(latlng)
         .setContent(createPopupEditorContent());
@@ -101,16 +101,29 @@ function renderMarkerEditor(latlng){
         newMarker.addTo(map);
         newMarker.openPopup();
 
-        // map.flyTo(newMarker._latlng);
-        // map.panBy(500);
-
         openEditorMarker = newMarker;
 
         $(".btn-cancel-marker").on("click", ()=>{
             newMarker.closePopup();
             newMarker.remove();
         })
+
+        $(".btn-add-image").on("click", ()=>{
+            console.log("Adding image... (coming soon)");
+        })
+
+        $(".btn-post-marker").on("click", ()=>{
+            console.log("Posting marker...");
+            var newMarkerObject = {};
+            newMarkerObject.title = document.querySelector("textarea.title").value;
+            newMarkerObject.note = document.querySelector("textarea.note").value;
+            newMarkerObject.reward = document.querySelector("input.reward").value;
+            console.log(newMarkerObject);
+            postMarker();
+        })
 }
+
+
 
 function renderMarkers(markersArray){
     markersArray.forEach((markerObject)=>{
@@ -147,24 +160,28 @@ function createPopupContent(markerObject){
     return popupContentString;
 }
 
+function postMarker(){
+    
+}
+
 function createPopupEditorContent(){
 
     var popupEditorContentString = `
 
     <div class="popup">
 
-        <div class="popup-image">
-            <img src="images/editor-d.jpg">
+        <div class="popup-image btn-add-image">
+            <img src="images/editor-e.jpg">
         </div>
 
-        <div class="popup-content">
+        <div class="popup-content editor">
             
-            <textarea class="title" type="text" placeholder="Click to add title"></textarea>
-            <textarea class="note" type="text" placeholder="Click to add note"></textarea>
-            <input type="number" class="reward" placeholder="Set bounty (kr)"></input>
+            <textarea class="title" type="text" placeholder="Add title"></textarea>
+            <textarea class="note" type="text" placeholder="Add note"></textarea>
+            <input type="number" class="reward" placeholder="Add bounty (kr)"></input>
             <div class="popup controls">
 
-                <div class="btn"><div class="label">Post</div></div>
+                <div class="btn btn-post-marker"><div class="label">Post</div></div>
                 <div class="btn btn-cancel-marker"><div class="label">Cancel</div></div>
 
             </div>

@@ -52,9 +52,11 @@ function createPin(latLong){ // new empty pins
     newPin.bindPopup(newPopup);
 }
 
+var markersLayerGroup = L.layerGroup();
+
 function renderMarker(markerObject){
 
-    console.log("Rendering marker: ", markerObject);
+    // console.log("Rendering marker: ", markerObject);
 
         var newMarker = L.marker(markerObject.latlng, {icon: pinIcon})
 
@@ -74,18 +76,19 @@ function renderMarker(markerObject){
         })
 
         newMarker.bindPopup(newPopup);
-        newMarker.addTo(map);
+        markersLayerGroup.addLayer(newMarker);
+        markersLayerGroup.addTo(map);
 
 };
 
-var openEditorMarker = false;
-
+var openEditorMarker = false; // a bool, which sometimes turns into an {object}
 function renderMarkerEditor(latlng){
 
     console.log("Rendering marker editor.");
 
         if (openEditorMarker != false){ 
             openEditorMarker.remove(); // remove abandoned editor pins
+            // why does this work?
         }
 
         var newMarker = L.marker(latlng, {icon: pinIcon});
@@ -115,15 +118,14 @@ function renderMarkerEditor(latlng){
         $(".btn-post-marker").on("click", ()=>{
             console.log("Posting marker...");
             var newMarkerObject = {};
+            newMarkerObject.latlng = latlng;
+            newMarkerObject.imgurl = "1.jpg"; // dummy for now, will get back to img upload
             newMarkerObject.title = document.querySelector("textarea.title").value;
             newMarkerObject.note = document.querySelector("textarea.note").value;
             newMarkerObject.reward = document.querySelector("input.reward").value;
-            console.log(newMarkerObject);
-            postMarker();
+            postMarker(newMarkerObject);
         })
 }
-
-
 
 function renderMarkers(markersArray){
     markersArray.forEach((markerObject)=>{
@@ -160,8 +162,29 @@ function createPopupContent(markerObject){
     return popupContentString;
 }
 
-function postMarker(){
-    
+function postMarker(newMarkerObject){
+
+    $.ajax({
+
+        url: "apis/api-post-new-marker.php",
+        data: {
+            "newMarkerLatlng": JSON.stringify(newMarkerObject.latlng),
+            "newMarkerImgurl": newMarkerObject.imgurl,
+            "newMarkerTitle": newMarkerObject.title,
+            "newMarkerNote": newMarkerObject.note,
+            "newMarkerReward": newMarkerObject.reward,
+        },
+        method: "post",
+
+    }).done(function(sData){
+
+        // substring(1) is once again a hack - for some reason the json-string gets prepended with a space in the API. Will cause problems later.
+        console.log("Posting marker...", JSON.parse(sData.substring(1)));
+        getMarkerObjectsFromBackend();
+        map.closePopup();
+
+    });
+
 }
 
 function createPopupEditorContent(){
@@ -176,9 +199,9 @@ function createPopupEditorContent(){
 
         <div class="popup-content editor">
             
-            <textarea class="title" type="text" placeholder="Add title"></textarea>
-            <textarea class="note" type="text" placeholder="Add note"></textarea>
-            <input type="number" class="reward" placeholder="Add bounty (kr)"></input>
+            <textarea class="title" type="text" placeholder="Add title">Some dummy title</textarea>
+            <textarea class="note" type="text" placeholder="Add note">Some dummy note</textarea>
+            <input type="number" class="reward" placeholder="Add bounty (kr)" value="102"></input>
             <div class="popup controls">
 
                 <div class="btn btn-post-marker"><div class="label">Post</div></div>
@@ -195,11 +218,19 @@ function createPopupEditorContent(){
 
 map.addEventListener("click", function(mapClick){
     console.log("Map clicked at latlng", mapClick.latlng);
+    
+    if (markersLayerGroup.isPopupOpen){
+        console.log("popup is open");
+    }
+
     renderMarkerEditor(mapClick.latlng);
+    
 });
 
 // rendering function is called inside this
 function getMarkerObjectsFromBackend(){
+
+    var backendMarkersArray = [];
 
     $.ajax({
       url: "apis/api-get-markers.php",
@@ -217,15 +248,14 @@ function getMarkerObjectsFromBackend(){
         // the substring code is a hotfix - the data wouldn't parse because there was a space in front of it
         console.log("Fetched markers from database:", markersArray);
         renderMarkers(markersArray);
+        console.log("GROUP:", markersLayerGroup);
     
     }).fail(function(){
         console.log("Failed to get markers from backend.")
-        
     });
 }
 
 getMarkerObjectsFromBackend();
 
-    
 
 

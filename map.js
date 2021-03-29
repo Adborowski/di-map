@@ -75,10 +75,13 @@ function renderMarker(markerObject){
         var newPopup = L.popup({offset: [0,-30]})
         .setLatLng(markerObject.latlng)
         .setContent(createPopupContent(markerObject))
+        
         newPopup.addEventListener("click", function(newPopup){
             console.log(newPopup)
         })
+
         newPopup.type = "marker";
+        newPopup.popupId = parseInt(markerObject.id);
         
 
         newMarker.bindPopup(newPopup);
@@ -249,12 +252,12 @@ map.addEventListener("click", function(mapClick){
 
 });
 
-map.addEventListener("popupopen", ()=>{ // power the Cancel button on every opening of a popup - also when created, closed, then reopened
+map.addEventListener("popupopen", (popupEvent)=>{ // power the Cancel button on every opening of a popup - also when created, closed, then reopened
 
-    // this really only applies to the marker editor for now
-    $(".btn-cancel-marker").on("click", ()=>{
-        map.closePopup();
-        openMarker = false;
+    var markerId = popupEvent.popup.popupId;
+
+    $(".btn-delete-marker").on("click", ()=>{
+        deleteMarker(markerId);
     })
 
 })
@@ -263,6 +266,10 @@ map.addEventListener("popupclose", (popup)=>{
     openEditorMarker ? openEditorMarker.remove() : console.log();
     openEditorMarker = false;
 });
+
+function deleteMarker(markerId){
+    console.log("Deleting marker with id", markerId);
+}
 
 // rendering function is called inside this
 function getMarkerObjectsFromBackend(){

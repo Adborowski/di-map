@@ -3,13 +3,29 @@
     margin: 0;
     padding: 0;
     font-family: "Product Sans Regular";
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
+*::-webkit-scrollbar {
+    display: none;
+  }
+
 /* MAIN MAP */
-#mapid { 
-    height: 800px;
-    width: 800px;
+
+#main{
+    height:100vh;
+    width:100vw;
+}
+#mapid {
+    position: absolute;
+    left: 0; top: 0;
+    height: 100%;
+    width: 100%;
     cursor: crosshair;
+
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 $color-input-bg: #fafafa;

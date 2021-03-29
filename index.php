@@ -18,7 +18,11 @@
 <?php require_once "db.php" ?>
 
 <body>
+
+<div id="main">
     <div id="mapid"></div>
+</div>
+
 </body>
 
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"

@@ -7,6 +7,7 @@
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
+  font-family: "archia" !important;
 }
 
 *::-webkit-scrollbar {
@@ -70,14 +71,23 @@
 }
 .popup-content .note {
   margin-bottom: 12px;
-  font-size: 14px;
+  font-size: 18px;
+  font-weight: 100;
 }
 .popup-content .reward {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 600;
-  text-align: left;
-  color: green;
+  text-align: center;
   font-family: "Product Sans Bold";
+  position: relative;
+}
+.popup-content .reward .amount {
+  display: inline-block;
+  background-color: green;
+  color: white;
+  padding: 12px;
+  border-radius: 24px;
+  width: 8em;
 }
 .popup-content .controls {
   display: grid;
@@ -100,7 +110,7 @@
 .popup-content .controls .btn .label {
   display: block;
 }
-.popup-content .controls .btn-delete-marker {
+.popup-content .controls .btn-start-fix {
   grid-column: span 2/auto;
 }
 .popup-content .editable {

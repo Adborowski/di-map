@@ -35,6 +35,7 @@ var pinIcon = L.icon({
     shadowAnchor: [22, 94]
 });
 
+// reduce this using inheritance with pinIcon
 var pinIconEditMode = L.icon({
     iconUrl: 'pin-4.svg',
     iconSize: [30, 30],
@@ -170,11 +171,12 @@ function createPopupContent(markerObject){
             
             <div class="title" type="text">${markerObject.title}</div>
             <div class="note" type="text">${markerObject.note}</div>
-            <div class="reward">Bounty: ${markerObject.reward} kr</div>
+            <div class="reward"><div class="amount">${markerObject.reward} kr</div></div>
             <div class="popup controls">
-                <div class="btn"><div class="label">Add Bounty</div></div>
-                <div class="btn"><div class="label">Fix</div></div>
-                <div class="btn btn-delete-marker"><div class="label">Delete Marker</div>
+                <div class="btn btn-delete-marker"><div class="label">Delete</div></div>
+                <div class="btn"><div class="label">Fund</div></div>
+                <div class="btn btn-start-fix"><div class="label">Fix</div></div>
+ 
             </div>
 
         </div>
@@ -259,7 +261,8 @@ map.addEventListener("popupopen", (popupEvent)=>{ // power the Cancel button on 
 
     $(".btn-delete-marker").on("click", ()=>{
         console.log(popupEvent.popup._source);
-        popupEvent.popup._source.closePopup().remove();
+        popupEvent.popup._source.closePopup();
+        popupEvent.popup._source.remove()
         openMarker = false;
         deleteMarker(markerId);
         // popupEvent.popup.closePopup();
@@ -274,7 +277,7 @@ map.addEventListener("popupclose", (popup)=>{
 });
 
 function deleteMarker(markerId){
-    console.log("Deleting marker with id", markerId);
+    
 
     $.ajax({
         url: "apis/api-delete-marker.php",
@@ -282,7 +285,7 @@ function deleteMarker(markerId){
         data: {markerId: markerId},
     }).done(function(sData){
         var jData = JSON.parse(sData.substring(1));
-        console.log(jData);
+        console.log("Deleting marker with id", markerId, jData);
     })
 }
 

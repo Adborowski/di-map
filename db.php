@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 try{
 
@@ -12,6 +12,7 @@ try{
   );
 
   $db = new PDO( $sConnection, $sUserName, $sPassword, $aOptions );
+  echo '';
 
 }catch( PDOException $e){
   echo '{"status":"err","message":"cannot connect to database"}';

@@ -26,7 +26,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
 // define pin icon
 var pinIcon = L.icon({
-    iconUrl: 'pin-2.svg',
+    iconUrl: 'images/pin-2.svg',
     iconSize: [30, 30],
     iconAnchor: [15, 30],
     popupAnchor: [0, -10],
@@ -37,7 +37,7 @@ var pinIcon = L.icon({
 
 // reduce this using inheritance with pinIcon
 var pinIconEditMode = L.icon({
-    iconUrl: 'pin-4.svg',
+    iconUrl: 'images/pin-4.svg',
     iconSize: [30, 30],
     iconAnchor: [15, 30],
     popupAnchor: [0, -10],
@@ -54,6 +54,8 @@ var oTestMarker = {
     "note": "Ensure your system meets each of the following prerequisites. You only need to perform each prerequisite step once on your system.",
     "reward": 150
 }
+
+var activeUserId = 1;
 
 var markersLayerGroup = L.layerGroup();
 var openMarker = false;
@@ -149,6 +151,7 @@ function renderMarkerEditor(latlng){
             newMarkerObject.title = document.querySelector("div.title").innerHTML;
             newMarkerObject.note = document.querySelector("div.note").innerHTML;
             newMarkerObject.reward = document.querySelector("input.reward").value;
+            newMarkerObject.ownerId = activeUserId;
 
             postMarker(newMarkerObject);
 
@@ -198,13 +201,15 @@ function postMarker(newMarkerObject){
             "newMarkerTitle": newMarkerObject.title,
             "newMarkerNote": newMarkerObject.note,
             "newMarkerReward": newMarkerObject.reward,
+            "newMarkerOwnerId" : newMarkerObject.ownerId
         },
         method: "post",
 
     }).done(function(sData){
 
         // substring(1) is once again a hack - for some reason the json-string gets prepended with a space in the API. Will cause problems later.
-        console.log("Posting marker...", JSON.parse(sData.substring(1)));
+        console.log(sData);
+        console.log("Posting marker...", JSON.parse(sData));
         getMarkerObjectsFromBackend(); // the map gets updated
         map.closePopup(); // close after posting
         openMarker = false; // marker is closed now
@@ -278,7 +283,6 @@ map.addEventListener("popupclose", (popup)=>{
 });
 
 function deleteMarker(markerId){
-    
 
     $.ajax({
         url: "apis/api-delete-marker.php",
@@ -300,7 +304,6 @@ function getMarkerObjectsFromBackend(){
       type: "post",
       data: "",
     }).done(function(jData){
-        jData = jData.substring(1);
         markersArray = JSON.parse(jData);
 
         // latlng is in the DB as a string, but Leaflet needs it as JSON

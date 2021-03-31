@@ -1,4 +1,12 @@
-﻿*{
+﻿
+$color-input-bg: #fafafa;
+$color-input-placeholder: #d0d0d0;
+
+$font-size-small: 14px;
+$font-size-large: 18px;
+$font-size-extra-large: 24px;
+
+*{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -6,35 +14,115 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
     font-family:"archia" !important;
+    outline: none;
 }
 
 *::-webkit-scrollbar {
     display: none;
   }
 
+.editable{
+border: 1px solid transparent; // hotfix for height jumping on empty div
+
+    &:empty:before{ // placeholder setup
+        content: attr(data-placeholder);
+        color: $color-input-placeholder;
+    }
+
+}
+
 /* MAIN MAP */
 
 #main{
     height:100vh;
     width:100vw;
+    position: relative;
 }
+
+.background-login{
+    height:100vh;
+    width:100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    background-color: white;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    transition: 0.3s all ease-in-out;
+}
+
+#wrapper-login{
+
+    max-width: 300px;
+    min-width: 200px;
+    background-color: orange;
+    padding: 36px 36px 36px 36px;
+    display: block;
+    margin: auto;
+    border-radius: 12px;
+
+    .label{
+        font-size: $font-size-extra-large;
+        font-weight: 700;
+        margin-bottom: 36px;
+        text-align: center;
+    }
+
+    .input{
+
+        background-color: white;
+        margin-bottom: 6px;
+        min-width: 200px;
+        border: 1px solid transparent;
+        font-size: $font-size-large;
+        padding: 6px;
+        border-radius: 6px;
+    }
+
+
+    #btn-login-submit{
+        border: 1px solid black;
+        text-align: center;
+        margin-top: 36px;
+        padding: 6px;
+        cursor: pointer;
+
+        &:hover{
+            opacity: 0.7;
+        }
+    }
+}
+
+#menu-panel{
+    position: absolute;
+    background-color: white;
+    padding: 6px;
+    border-radius: 0px 0px 0px 12px;
+    top: 0;
+    right: 0;
+    z-index: 500;
+
+    #user-marker{
+        color: red;
+        display: inline;
+    }
+}
+
 #mapid {
     position: absolute;
-    left: 0; top: 0;
+    left: 0; top: 2000px;
     height: 100%;
     width: 100%;
     cursor: crosshair;
 
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+
+    transition: 0.3s all;
 }
 
-$color-input-bg: #fafafa;
-$color-input-placeholder: #d0d0d0;
-
-$font-size-small: 14px;
-$font-size-large: 18px;
-$font-size-extra-large: 24px;
 
 .popup-image{
 
@@ -72,7 +160,7 @@ $font-size-extra-large: 24px;
 
     .title{
         font-size: $font-size-extra-large;
-        font-weight: 600;
+        font-weight: 700;
         margin-bottom: 12px;
         text-align: left;
         font-family: "Product Sans Bold";
@@ -83,6 +171,10 @@ $font-size-extra-large: 24px;
         margin-bottom: 12px;
         font-size: $font-size-large;
         font-weight: 100;
+    }
+
+    input.reward{
+        text-align: left;
     }
 
     .reward{
@@ -102,19 +194,6 @@ $font-size-extra-large: 24px;
             border-radius: 24px;
             width: 100%;
         }
-
-        // .btn-plus{
-        //     background-color: green;
-        //     color: white;
-        //     height: 100%;
-        //     width: 7em;
-        //     display:block;
-        //     position:absolute;
-        //     right: 0;
-        //     top: 0;
-        //     border-radius: 100px;
-        //     text-align: center;
-        // }
     
     }
 
@@ -155,16 +234,6 @@ $font-size-extra-large: 24px;
 
     // for empty popup
 
-    .editable{
-        border: 1px solid transparent; // hotfix for height jumping on empty div
-
-        &:empty:before{ // placeholder setup
-            content: attr(data-placeholder);
-            color: $color-input-placeholder;
-        }
-
-    }
-
     input{
         border: none;
         outline: none;
@@ -172,13 +241,6 @@ $font-size-extra-large: 24px;
         &::placeholder{
             color: $color-input-placeholder;
         }
-    }
-
-    input.reward{
-        margin-bottom: 12px;
-        // background-color: $color-input-bg;
-        width: 100%;
-        min-width: 250px;
     }
 
     textarea{

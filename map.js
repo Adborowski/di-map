@@ -168,14 +168,15 @@ function createPopupContent(markerObject){
         </div>
 
         <div class="popup-content" data-pin-id=${markerObject.id}>
-            
+        <div class="reward"><div class="amount">${markerObject.reward} kr</div></div>
             <div class="title" type="text">${markerObject.title}</div>
             <div class="note" type="text">${markerObject.note}</div>
-            <div class="reward"><div class="amount">${markerObject.reward} kr</div></div>
+
             <div class="popup controls">
-                <div class="btn btn-delete-marker"><div class="label">Delete</div></div>
+
                 <div class="btn"><div class="label">Fund</div></div>
                 <div class="btn btn-start-fix"><div class="label">Fix</div></div>
+                <div class="btn btn-delete-marker"><div class="label">Delete</div></div>
  
             </div>
 

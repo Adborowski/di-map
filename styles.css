@@ -75,19 +75,21 @@
   font-weight: 100;
 }
 .popup-content .reward {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 600;
   text-align: center;
   font-family: "Product Sans Bold";
   position: relative;
+  margin-bottom: 18px;
+  margin-top: 6px;
 }
 .popup-content .reward .amount {
   display: inline-block;
-  background-color: green;
+  background-color: orange;
   color: white;
-  padding: 12px;
+  padding: 6px;
   border-radius: 24px;
-  width: 8em;
+  width: 100%;
 }
 .popup-content .controls {
   display: grid;
@@ -110,7 +112,7 @@
 .popup-content .controls .btn .label {
   display: block;
 }
-.popup-content .controls .btn-start-fix {
+.popup-content .controls .btn-delete-marker {
   grid-column: span 2/auto;
 }
 .popup-content .editable {

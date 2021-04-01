@@ -40,6 +40,7 @@ function loginUser(){
         }
 
         console.log(processedData);
+        getMarkerObjectsFromBackend(); // redraw so ownership would update
     });
 
 }

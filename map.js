@@ -55,12 +55,10 @@ var oTestMarker = {
     "reward": 150
 }
 
-var activeUserId = 1;
-
 var markersLayerGroup = L.layerGroup();
 var openMarker = false;
 
-function renderMarker(markerObject){
+function addMarkerToGroup(markerObject){
 
     // console.log("Rendering marker: ", markerObject);
 
@@ -70,6 +68,7 @@ function renderMarker(markerObject){
         newMarker.latlng = markerObject.latlng;
         newMarker.title = markerObject.title;
         newMarker.type = "marker";
+        newMarker.owner_id = markerObject.owner_id;
 
         newMarker.addEventListener("click", function(e){
             openMarker = newMarker;
@@ -86,17 +85,15 @@ function renderMarker(markerObject){
         newPopup.type = "marker";
         newPopup.popupId = parseInt(markerObject.id);
         
-
         newMarker.bindPopup(newPopup);
         markersLayerGroup.addLayer(newMarker);
-        markersLayerGroup.addTo(map);
 
 };
 
-function renderMarkers(markersArray){
-    markersArray.forEach((markerObject)=>{
-        renderMarker(markerObject);
-    })
+function renderMarkerGroup(markersLayerGroup){
+    
+    markersLayerGroup.addTo(map);
+
 }
 
 var openEditorMarker = false; // a bool, which later turns into a marker object
@@ -110,7 +107,9 @@ function renderMarkerEditor(latlng){
 
         var newMarker = L.marker(latlng, {draggable: false, icon: pinIconEditMode})
                          .on('click', ()=>{openMarker = false}); // hotfix - the openMarker flag system needs a rework
+
         newMarker.type = "markerEditor";
+        console.log(newMarker);
 
         var newPopup = L.popup({offset: [0,-30]})
         .setLatLng(latlng)
@@ -122,13 +121,10 @@ function renderMarkerEditor(latlng){
         newMarker.addTo(map);
         newMarker.openPopup();
 
+
         newPopup.addEventListener("click", function(newPopup){
             console.log(newPopup);
         })
-
-        // newMarker.on('dragend', function(e) { // this is cool ux but dragging is disabled for now
-        //     newMarker.openPopup();
-        //     });
 
         openEditorMarker = newMarker;
         openMarker = newMarker;
@@ -151,6 +147,7 @@ function renderMarkerEditor(latlng){
             newMarkerObject.title = document.querySelector("div.title").innerHTML;
             newMarkerObject.note = document.querySelector("div.note").innerHTML;
             newMarkerObject.reward = document.querySelector("input.reward").value;
+            var activeUserId = $("#user-marker").text();
             newMarkerObject.ownerId = activeUserId;
 
             postMarker(newMarkerObject);
@@ -161,6 +158,7 @@ function renderMarkerEditor(latlng){
 }
 
 function createPopupContent(markerObject){
+
     // common popup with marker data from db
     var popupContentString = `
 
@@ -182,11 +180,11 @@ function createPopupContent(markerObject){
                 <div class="btn btn-delete-marker"><div class="label">Delete</div></div>
  
             </div>
-
         </div>
-
     </div>
-    `
+    `;
+
+
     return popupContentString;
 }
 
@@ -207,15 +205,14 @@ function postMarker(newMarkerObject){
 
     }).done(function(sData){
 
-        // substring(1) is once again a hack - for some reason the json-string gets prepended with a space in the API. Will cause problems later.
         console.log(sData);
-        console.log("Posting marker...", JSON.parse(sData));
+        oData = JSON.parse(sData);
+        console.log("Posting marker...", oData);
         getMarkerObjectsFromBackend(); // the map gets updated
         map.closePopup(); // close after posting
         openMarker = false; // marker is closed now
 
     });
-
 }
 
 function createPopupEditorContent(){
@@ -261,19 +258,30 @@ map.addEventListener("click", function(mapClick){
 
 });
 
-map.addEventListener("popupopen", (popupEvent)=>{ // power the Cancel button on every opening of a popup - also when created, closed, then reopened
+map.addEventListener("popupopen", (popupEvent)=>{ // some buttons get powered at this event, because they only exist after opening a popup
 
-    var markerId = popupEvent.popup.popupId;
+    var markerParent = popupEvent.popup._source; // which MARKER is behind the popup;
 
-    $(".btn-delete-marker").on("click", ()=>{
-        console.log(popupEvent.popup._source);
-        popupEvent.popup._source.closePopup();
-        popupEvent.popup._source.remove()
-        openMarker = false;
-        deleteMarker(markerId);
-        // popupEvent.popup.closePopup();
-        // popupEvent.popup._source.remove();
-    })
+    if (markerParent.type == "marker"){ // this is only for regular, not for editor-type markers (types: "marker", "markerEditor")
+
+        var markerId = popupEvent.popup.popupId;
+        $(".btn-delete-marker").on("click", ()=>{
+            console.log(popupEvent.popup._source);
+            markerParent.remove();
+            popupEvent.popup._source.closePopup();
+            openMarker = false;
+            deleteMarker(markerId);
+        })
+    
+        var activeUser = $("#user-marker").text(); // get the active user's id from the echoed DOM element
+    
+        // figure out which markers should have a DELETE button (question of ownership)
+    
+        if (activeUser != markerParent.owner_id){
+            document.querySelector(".btn-delete-marker").remove();
+        }
+    }
+
 
 })
 
@@ -289,7 +297,7 @@ function deleteMarker(markerId){
         type: "post",
         data: {markerId: markerId},
     }).done(function(sData){
-        var jData = JSON.parse(sData.substring(1));
+        var jData = JSON.parse(sData);
         console.log("Deleting marker with id", markerId, jData);
     })
 }
@@ -306,15 +314,22 @@ function getMarkerObjectsFromBackend(){
     }).done(function(jData){
         markersArray = JSON.parse(jData);
 
-        // latlng is in the DB as a string, but Leaflet needs it as JSON
+        // parse JSON strings into JSON objects, and string-integers into integers
         markersArray.forEach((singleMarkerData) => {
             singleMarkerData.latlng = JSON.parse(singleMarkerData.latlng);
+            singleMarkerData.id = JSON.parse(singleMarkerData.id);
+            singleMarkerData.owner_id = JSON.parse(singleMarkerData.owner_id);
         })
 
-        // the substring code is a hotfix - the data wouldn't parse because there was a space in front of it
         console.log("Fetched markers from database:", markersArray);
-        renderMarkers(markersArray);
         console.log("GROUP:", markersLayerGroup);
+
+        markersLayerGroup.clearLayers();
+        markersArray.forEach((markerObject)=>{
+            addMarkerToGroup(markerObject);
+        });
+        
+        renderMarkerGroup(markersLayerGroup);
     
     }).fail(function(){
         console.log("Failed to get markers from backend.")

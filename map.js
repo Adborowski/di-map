@@ -120,6 +120,7 @@ function renderMarkerEditor(latlng){
         newMarker.bindPopup(newPopup);
         newMarker.addTo(map);
         newMarker.openPopup();
+        powerImageUploadButton();
 
 
         newPopup.addEventListener("click", function(newPopup){
@@ -151,7 +152,6 @@ function renderMarkerEditor(latlng){
             newMarkerObject.ownerId = activeUserId;
 
             postMarker(newMarkerObject);
-
         });
 
 
@@ -221,9 +221,12 @@ function createPopupEditorContent(){
 
     <div class="popup">
 
-        <div class="popup-image btn-add-image">
-            <img src="images/editor-e.jpg">
+        <div class="popup-image" id="btn-img-upload">
+            <img id="upload-preview" src="">
+            <input type="file" id="file" name="file"></input>
         </div>
+
+        <input type="button" class="button" value="Upload" id="but_upload">
 
         <div class="popup-content editor">
             

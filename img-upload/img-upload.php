@@ -6,7 +6,7 @@
             <img src="" id="img" width="100" height="100">
         </div>
         <div >
-            <input type="file" id="file" name="file" />
+            <!-- <input type="file" id="file" name="file" /> -->
             <input type="button" class="button" value="Upload" id="but_upload">
         </div>
     </form>

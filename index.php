@@ -1,4 +1,4 @@
-<?php require_once "db.php" ?>
+﻿<?php require_once "db.php" ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,6 +38,7 @@ crossorigin=""></script>
 
 <script src="map.js"></script>
 <script src="login.js"></script>
+<script src="img-upload.js"></script>
 
 <script>
 </script>

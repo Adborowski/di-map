@@ -1,4 +1,4 @@
-﻿$(document).ready(function(){
+﻿function powerImageUploadButton(){
 
     $("#but_upload").click(function(){
 
@@ -10,13 +10,13 @@
            fd.append('file',files[0]);
 
            $.ajax({
-              url: 'upload.php', // the api
+              url: 'apis/api-upload-image.php', // the api
               type: 'post',
               data: fd, // empty formdata
               contentType: false,
               processData: false,
               success: function(response){
-                  
+                  console.log("Done with AJAX for img up", response)
                  if(response != 0){
                     $("#img").attr("src",response); 
                     $(".preview img").show(); // Display image element
@@ -26,7 +26,7 @@
               },
            });
         }else{
-           alert("Please select a file.");
+           console.log("please select a file")
         }
     });
-});
+}

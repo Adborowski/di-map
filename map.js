@@ -144,7 +144,7 @@ function renderMarkerEditor(latlng){
             console.log("Posting marker...");
             var newMarkerObject = {};
             newMarkerObject.latlng = latlng;
-            newMarkerObject.imgurl = "1.jpg"; // dummy for now, will get back to img upload
+            newMarkerObject.imgurl = document.querySelector("#temporary-img-id").innerHTML; // dummy for now, will get back to img upload
             newMarkerObject.title = document.querySelector("div.title").innerHTML;
             newMarkerObject.note = document.querySelector("div.note").innerHTML;
             newMarkerObject.reward = document.querySelector("input.reward").value;
@@ -222,11 +222,13 @@ function createPopupEditorContent(){
     <div class="popup">
 
         <div class="popup-image" id="btn-img-upload">
-            <img id="upload-preview" src="">
-            <input type="file" id="file" name="file"></input>
+            <img id="upload-preview" class="preview" src="images/1.jpg">
         </div>
 
-        <input type="button" class="button" value="Upload" id="but_upload">
+        <div class="controls-img-upload" style="position: absolute; top: 36px">
+            <input class="control" type="file" id="file" name="file"></input>
+            <input class="control" type="button" class="button" value="Upload" id="but_upload">
+        </div>
 
         <div class="popup-content editor">
             

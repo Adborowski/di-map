@@ -10,7 +10,7 @@ $font-size-extra-large: 24px;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: "Product Sans Regular";
+    // font-family: "Product Sans Regular";
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
     font-family:"archia" !important;
@@ -131,6 +131,9 @@ border: 1px solid transparent; // hotfix for height jumping on empty div
     top: 0;
     left: 0;
     margin: auto;
+    max-height: 200px;
+    overflow: scroll;
+    border-radius: 12px 12px 0px 0px;
     // z-index: -100;
 
     .overlay{
@@ -148,7 +151,7 @@ border: 1px solid transparent; // hotfix for height jumping on empty div
         width: 100%;
         display:block;
         margin:auto;
-        border-radius: 12px 12px 0px 0px;
+        // border-radius: 12px 12px 0px 0px;
     }
 }
 

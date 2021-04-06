@@ -164,11 +164,11 @@ function createPopupContent(markerObject){
 
     <div class="popup">
 
-        <div class="popup-image">
+        <div class="popup-image-content">
             <img src="images/${markerObject.imgurl}">
         </div>
 
-        <div class="popup-content" data-pin-id=${markerObject.id}>
+        <div class="popup-text-content" data-pin-id=${markerObject.id}>
         <div class="reward"><div class="amount">${markerObject.reward} kr</div></div>
             <div class="title" type="text">${markerObject.title}</div>
             <div class="note" type="text">${markerObject.note}</div>
@@ -195,16 +195,19 @@ function createPopupEditorContent(){
 
     <div class="popup">
 
-        <div class="popup-image" id="btn-img-upload">
-            <img id="upload-preview" class="preview" src="images/1.jpg">
+        <div class="popup-image-content" id="btn-img-upload">
+            <label class="img-upload" for="file">
+                <div class="overlay" id="image-upload-overlay"><div class="line">Click to upload an image. <br>Horizontal images look best.</div></div>
+                <img id="upload-preview" class="preview" src="images/1.jpg">
+            </label>
+
+            <div class="controls-img-upload" style="position: absolute; top: 36px">
+                <input class="control" onchange="uploadImage()" type="file" id="file" name="file"></input>
+                <input class="control" type="button" class="button" value="Upload" id="but_upload">
+            </div>
         </div>
 
-        <div class="controls-img-upload" style="position: absolute; top: 36px">
-            <input class="control" type="file" id="file" name="file"></input>
-            <input class="control" type="button" class="button" value="Upload" id="but_upload">
-        </div>
-
-        <div class="popup-content editor">
+        <div class="popup-text-content editor">
             
             <div contenteditable="true" class="editable title" type="text" data-placeholder="Add a title"></div>
             <div contenteditable="true" class="editable note" type="text" data-placeholder="Add a note"></div>

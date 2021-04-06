@@ -125,7 +125,7 @@ border: 1px solid transparent; // hotfix for height jumping on empty div
 }
 
 
-.popup-image{
+.popup-image-content{
 
     position: absolute;
     top: 0;
@@ -142,9 +142,17 @@ border: 1px solid transparent; // hotfix for height jumping on empty div
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: red;
         border-radius: 12px 12px 0px 0px;
         opacity: 0.5;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .line{
+            // border: 1px solid black;
+            text-align: center;
+            color: red;
+        }
     }
 
     img{
@@ -153,9 +161,15 @@ border: 1px solid transparent; // hotfix for height jumping on empty div
         margin:auto;
         // border-radius: 12px 12px 0px 0px;
     }
+
+    .controls-img-upload{
+        border: 1px solid black;
+        width: 100%;
+        display: none;
+    }
 }
 
-.popup-content{ // text content of the popup
+.popup-text-content{ // text content of the popup
     
     padding: 0px 12px 12px 12px;
     margin-top: 210px;
@@ -179,6 +193,7 @@ border: 1px solid transparent; // hotfix for height jumping on empty div
 
     input.reward{
         text-align: left;
+        color: green;
     }
 
     .reward{

@@ -32,20 +32,22 @@ function loginUser(){
 
         var userObject = JSON.parse(sData);
 
-        if (userObject){
+        if (userObject.id>0){ // API returns a user object with non-zero id
+            userObject.id = parseInt(userObject.id);
             console.log(userObject);
-            userObject.userId = parseInt(userObject.userId);
-            $("#user-marker").text(userObject.userId);
-        // move login screen out of the way; move in the map
-
+            $("#user-marker").text(userObject.id);
             fadeOutLoginScreen();
-        // populate the menu panel with the user's name and their ID for db queries
+
+        // populate the menu panel with the user's name and their ID for db queries (hack)
             document.querySelector("#user-marker").innerHTML = userObject.id;
             document.querySelector("#active-username").innerHTML = userObject.username;
+
+        } else { // if failed to sign in
+            alert ("Failed to sign in. Please try again.");
         }
 
-
         getMarkerObjectsFromBackend(); // redraw so ownership would update
+
     });
 
 }

@@ -18,9 +18,8 @@ function loginUser(){
 
     var submittedUsername = $("#login-username").text();
     var submittedPassword = $("#login-password").text();
-    console.log("submitting login: ", submittedUsername, submittedPassword);
 
-    $.ajax({ // marker gets saved in the backend first
+    $.ajax({
 
         url: "apis/api-login-user.php",
         data: {
@@ -31,27 +30,44 @@ function loginUser(){
 
     }).done(function(sData){
 
-        var processedData = JSON.parse(sData);
+        var userObject = JSON.parse(sData);
 
-        if(processedData.status == 1){
-            processedData.userId = parseInt(processedData.userId);
-            $("#user-marker").text(processedData.userId);
-            verifyAuthentication();
+        if (userObject){
+            console.log(userObject);
+            userObject.userId = parseInt(userObject.userId);
+            $("#user-marker").text(userObject.userId);
+        // move login screen out of the way; move in the map
+
+            fadeOutLoginScreen();
+        // populate the menu panel with the user's name and their ID for db queries
+            document.querySelector("#user-marker").innerHTML = userObject.id;
+            document.querySelector("#active-username").innerHTML = userObject.username;
         }
 
-        console.log(processedData);
+
         getMarkerObjectsFromBackend(); // redraw so ownership would update
     });
 
 }
 
+function fadeOutLoginScreen(){
+
+    document.querySelector(".background-login").style.transition = "0.3s all";
+    document.querySelector(".background-login").style.opacity = "0";
+    window.setTimeout(() => {
+        document.querySelector(".background-login").style.display = "none";
+    }, 300);
+
+
+}
+
 function verifyAuthentication(){
-    console.log("Verifying authentication...");
-    var userMarker = document.getElementById("user-marker").innerHTML;
+
     if (userMarker > 0){
         console.log("OK");
-        document.querySelector(".background-login").style.top = "-2000px";
-        document.querySelector("#mapid").style.top = "0";
+
+
+
     }
 
 }

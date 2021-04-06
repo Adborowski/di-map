@@ -96,7 +96,6 @@
 #mapid {
   position: absolute;
   left: 0;
-  top: 2000px;
   height: 100%;
   width: 100%;
   cursor: crosshair;

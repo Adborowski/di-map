@@ -188,32 +188,6 @@ function createPopupContent(markerObject){
     return popupContentString;
 }
 
-function postMarker(newMarkerObject){
-
-    $.ajax({ // marker gets saved in the backend first
-
-        url: "apis/api-post-new-marker.php",
-        data: {
-            "newMarkerLatlng": JSON.stringify(newMarkerObject.latlng),
-            "newMarkerImgurl": newMarkerObject.imgurl,
-            "newMarkerTitle": newMarkerObject.title,
-            "newMarkerNote": newMarkerObject.note,
-            "newMarkerReward": newMarkerObject.reward,
-            "newMarkerOwnerId" : newMarkerObject.ownerId
-        },
-        method: "post",
-
-    }).done(function(sData){
-
-        console.log(sData);
-        oData = JSON.parse(sData);
-        console.log("Posting marker...", oData);
-        getMarkerObjectsFromBackend(); // the map gets updated
-        map.closePopup(); // close after posting
-        openMarker = false; // marker is closed now
-
-    });
-}
 
 function createPopupEditorContent(){
 
@@ -249,6 +223,32 @@ function createPopupEditorContent(){
     return popupEditorContentString;
 }
 
+function postMarker(newMarkerObject){
+
+    $.ajax({ // marker gets saved in the backend first
+
+        url: "apis/api-post-new-marker.php",
+        data: {
+            "newMarkerLatlng": JSON.stringify(newMarkerObject.latlng),
+            "newMarkerImgurl": newMarkerObject.imgurl,
+            "newMarkerTitle": newMarkerObject.title,
+            "newMarkerNote": newMarkerObject.note,
+            "newMarkerReward": newMarkerObject.reward,
+            "newMarkerOwnerId" : newMarkerObject.ownerId
+        },
+        method: "post",
+
+    }).done(function(sData){
+
+        console.log(sData);
+        oData = JSON.parse(sData);
+        console.log("Posting marker...", oData);
+        getMarkerObjectsFromBackend(); // the map gets updated
+        map.closePopup(); // close after posting
+        openMarker = false; // marker is closed now
+
+    });
+}
 // map click handling
 map.addEventListener("click", function(mapClick){
 

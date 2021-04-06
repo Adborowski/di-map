@@ -112,7 +112,8 @@ border: 1px solid transparent; // hotfix for height jumping on empty div
 
 #mapid {
     position: absolute;
-    left: 0; top: 2000px;
+    left: 0; 
+    // top: 2000px;
     height: 100%;
     width: 100%;
     cursor: crosshair;

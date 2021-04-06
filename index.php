@@ -22,8 +22,10 @@
 <body>
 <div id="main">
     <div id="menu-panel">
-        Welcome, <div id="user-marker">0</div>
-        <div id="temporary-img-id">no img</div>
+        Welcome, <div id="active-username"></div> 
+        
+        <div class="hidden" id="user-marker">0</div>
+        <div class="hidden" id="temporary-img-id">no img</div>
     </div>
 
     <?php include_once "login.php" ?>

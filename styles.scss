@@ -194,6 +194,7 @@ border: 1px solid transparent; // hotfix for height jumping on empty div
     }
 
     .note{
+        font-size: $font-size-small;
         margin-bottom: 12px;
         font-weight: 100;
     }

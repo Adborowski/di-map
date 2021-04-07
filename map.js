@@ -252,6 +252,14 @@ function postMarker(newMarkerObject){
 
     });
 }
+
+function panToPopup(openMarker){
+    var px = map.project(openMarker._popup._latlng); // get pixels from latlng
+    console.log(px);
+    px.y -= openMarker._popup._container.clientHeight/2 + 42; // the 42 is arbitrary
+    map.panTo(map.unproject(px),{animate: true}); 
+}
+
 // map click handling
 map.addEventListener("click", function(mapClick){
 
@@ -262,6 +270,8 @@ map.addEventListener("click", function(mapClick){
         openMarker = false;
     } else {
         renderMarkerEditor(mapClick.latlng);
+        console.log(openMarker);
+        panToPopup(openMarker); // custom function
     }
 
 });
@@ -269,6 +279,7 @@ map.addEventListener("click", function(mapClick){
 map.addEventListener("popupopen", (popupEvent)=>{ // some buttons get powered at this event, because they only exist after opening a popup
 
     var markerParent = popupEvent.popup._source; // which MARKER is behind the popup;
+    panToPopup(markerParent);
 
     if (markerParent.type == "marker"){ // this is only for regular, not for editor-type markers (types: "marker", "markerEditor")
 
@@ -288,6 +299,7 @@ map.addEventListener("popupopen", (popupEvent)=>{ // some buttons get powered at
         if (activeUser != markerParent.owner_id){
             document.querySelector(".btn-delete-marker").remove();
         }
+
     }
 
 

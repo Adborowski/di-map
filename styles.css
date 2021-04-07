@@ -162,6 +162,7 @@
   font-family: "Product Sans Bold";
 }
 .popup-text-content .note {
+  font-size: 14px;
   margin-bottom: 12px;
   font-weight: 100;
 }

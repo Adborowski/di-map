@@ -197,7 +197,7 @@ function createPopupEditorContent(){
 
         <div class="popup-image-content" id="btn-img-upload">
             <label class="img-upload" for="file">
-                <div class="overlay" id="image-upload-overlay"><div class="line">Click to upload an image. <br>Horizontal images look best.</div></div>
+                <div class="overlay" id="image-upload-overlay"><div class="line">Click to upload an image</div></div>
                 <img id="upload-preview" class="preview" src="images/1.jpg">
             </label>
 
@@ -208,10 +208,10 @@ function createPopupEditorContent(){
         </div>
 
         <div class="popup-text-content editor">
-            
+        <input type="number" class="editable reward" placeholder="Set a reward"></input></span>
             <div contenteditable="true" class="editable title" type="text" data-placeholder="Add a title"></div>
             <div contenteditable="true" class="editable note" type="text" data-placeholder="Add a note"></div>
-            <input type="number" class="editable reward" placeholder="Set a reward"></input>
+            
             <div class="popup controls">
 
                 <div class="btn btn-post-marker"><div class="label">Post</div></div>

@@ -105,17 +105,23 @@
   transition: 0.3s all;
 }
 
+.leaflet-popup-content {
+  margin: 0px;
+  min-width: 300px;
+}
+
 .popup-image-content {
-  position: absolute;
   top: 0;
   left: 0;
   margin: auto;
-  max-height: 200px;
+  max-height: 250px;
   overflow: scroll;
   border-radius: 12px 12px 0px 0px;
+  position: relative;
 }
 .popup-image-content .overlay {
   position: absolute;
+  font-weight: 200;
   top: 0;
   left: 0;
   width: 100%;
@@ -128,7 +134,7 @@
 }
 .popup-image-content .overlay .line {
   text-align: center;
-  color: red;
+  color: "darkslateblue";
 }
 .popup-image-content img {
   width: 100%;
@@ -142,13 +148,14 @@
 }
 
 .popup-text-content {
-  padding: 0px 12px 12px 12px;
-  margin-top: 210px;
-  background-color: white;
-  width: 300px;
+  padding: 18px;
+  /* margin: 6px; */
+  /* background-color: white; */
+  /* width: 300px; */
+  font-size: 18px;
+  position: relative;
 }
 .popup-text-content .title {
-  font-size: 24px;
   font-weight: 700;
   margin-bottom: 12px;
   text-align: left;
@@ -156,21 +163,25 @@
 }
 .popup-text-content .note {
   margin-bottom: 12px;
-  font-size: 18px;
   font-weight: 100;
 }
 .popup-text-content input.reward {
-  text-align: left;
-  color: green;
+  text-align: center;
+  padding: 6px;
+  border-radius: 24px;
+  background-color: "0f5862";
+  color: black;
+  border: 1px solid #d0d0d0;
+  width: 100%;
+  left: 0px;
 }
 .popup-text-content .reward {
-  font-size: 24px;
+  font-size: inherit;
   font-weight: 600;
   text-align: center;
   font-family: "Product Sans Bold";
   position: relative;
   margin-bottom: 18px;
-  margin-top: 6px;
 }
 .popup-text-content .reward .amount {
   display: inline-block;
@@ -188,7 +199,6 @@
 }
 .popup-text-content .controls .btn {
   border: 1px solid black;
-  font-size: 24px;
   text-align: center;
   display: flex;
   flex-direction: column;
